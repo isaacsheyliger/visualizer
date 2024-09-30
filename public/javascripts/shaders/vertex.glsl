@@ -552,7 +552,7 @@ float pnoise(vec3 P, vec3 rep)
         float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
         float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
         float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-        float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+        float n011 = dvertexot(g011, vec3(Pf0.x, Pf1.yz));
         float n111 = dot(g111, Pf1);
 
         vec3 fade_xyz = fade(Pf0);
