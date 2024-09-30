@@ -18,9 +18,11 @@ sc.camera.add(listener);
 
 const audio = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
+
+const playPauseButton = document.getElementById('playPause');
 audioLoader.load('audio/Therapy.mp3', buffer => {
     audio.setBuffer(buffer);
-    window.addEventListener('click', () => {
+    playPauseButton.addEventListener('click', () => {
         audio.play();
     });
 });
