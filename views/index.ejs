@@ -131,10 +131,13 @@
         <input type="file" id="audio-file" accept="audio/*" multiple />
         <label for="audio-file" id="audio-label">Choose a music file</label>
       </div>
-      <div id="seek">
-        <span id="current-time" class="time">0:00</span>
-        <input type="range" id="seek-slider" max="100" value="0">
-        <span id="duration" class="time">0:00</span>
+      <div id="now-playing">
+        <div id="current-song"></div>
+        <div id="seek">
+          <span id="current-time" class="time">0:00</span>
+          <input type="range" id="seek-slider" max="100" value="0">
+          <span id="duration" class="time">0:00</span>
+        </div>
       </div>
       <div class="controls">
         <audio id="audio" preload="metadata"></audio>

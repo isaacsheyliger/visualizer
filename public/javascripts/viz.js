@@ -26,18 +26,23 @@ playPauseButton.disabled = true;
 nextButton.disabled = true;
 prevButton.disabled = true;
 
+const track = document.getElementById('current-track');
+
 const inputElement = document.getElementById('audio-file');
 const urls = [];
 inputElement.addEventListener('change', handleFiles, false);
 
 function handleFiles() {
-    // const fileList = this.files;
-    // need to freeze the loop until the audio track completes
-    // ditch for loop and use the index of the track 
-    for (let i = inputElement.files.length - 1; i >= 0; i--) {
-        urls.push(URL.createObjectURL(inputElement.files[i]));
+    fileArr = Array.from(inputElement.files);
+    fileArr.reverse();
+    for (let i = 0; i < fileArr.length; i++) {
+        urls.push(URL.createObjectURL(fileArr[i]));
     }
 
+    console.log(fileArr);
+    console.log(urls);
+    console.log(inputElement.files);
+    
     let index = 0;
     
     // enable buttons based on number of tracks uploaded
@@ -56,6 +61,7 @@ function handleFiles() {
     
     audioLoader.load(urls[index], buffer => {
         audio.setBuffer(buffer);
+        track.innerHTML = fileArr[index].name;
         playPauseButton.addEventListener('click', () => {
             audio.isPlaying ? audio.pause() : audio.play(); 
         });
