@@ -22,46 +22,73 @@ const audioLoader = new THREE.AudioLoader();
 const playPauseButton = document.getElementById('play-pause');
 const nextButton = document.getElementById('next');
 const prevButton = document.getElementById('prev');
+playPauseButton.disabled = true;
+nextButton.disabled = true;
+prevButton.disabled = true;
+
 const inputElement = document.getElementById('audio-file');
 const urls = [];
-for (let i = 0; i < inputElement.files.length; i++) {
-    urls.push(URL.createObjectURL(inputElement.files[i]));
-}
-console.log(urls)
 inputElement.addEventListener('change', handleFiles, false);
 
 function handleFiles() {
     // const fileList = this.files;
-    // loop through urls array
-    for (let i = 0; i < urls.length; i++) {
-        audioLoader.load(urls[i], buffer => {
-            audio.setBuffer(buffer);
-            playPauseButton.addEventListener('click', () => {
-                audio.isPlaying ? audio.pause() : audio.play(); 
-            });
-            
-            i > 0 ? prevButton.addEventListener('click', () => playPrev(i)) : prevButton.disabled = true;
-            i < urls.length - 1 ? nextButton.addEventListener('click', () => playNext(i)) : nextButton.disabled = true;
-        });
+    // need to freeze the loop until the audio track completes
+    // ditch for loop and use the index of the track 
+    for (let i = 0; i < inputElement.files.length; i++) {
+        urls.push(URL.createObjectURL(inputElement.files[i]));
     }
 
+    console.log(inputElement.files);
+
+    let index = 0;
+    
+    // enable buttons based on number of tracks uploaded
+    if (urls.length > 0) { playPauseButton.disabled = false; }
+    if (urls.length > 1) { 
+        nextButton.disabled = false; 
+        prevButton.addEventListener('click', () => {
+            playPrev(index); 
+            index--;
+        });
+        nextButton.addEventListener('click', () => {
+            playNext(index)
+            index++;
+        });
+    }
+    
+    audioLoader.load(urls[index], buffer => {
+        audio.setBuffer(buffer);
+        playPauseButton.addEventListener('click', () => {
+            audio.isPlaying ? audio.pause() : audio.play(); 
+        });
+    });
+
     function playNext(index) {
+        audio.stop();
         audioLoader.load(urls[index + 1], buffer => {
             audio.setBuffer(buffer);
             audio.play();
+            index + 1 >= urls.length - 1 ? nextButton.disabled = true : nextButton.disabled = false;
+            prevButton.disabled = false;
         });
     }
 
     function playPrev(index) {
+        audio.stop();
         audioLoader.load(urls[index - 1], buffer => {
             audio.setBuffer(buffer);
             audio.play();
+            index - 1 < 0 ? prevButton.disabled = true : prevButton.disabled = false;
+            nextButton.disabled = false;
         });
     }
 
     audio.onEnded = () => {
         if (index < urls.length - 1) {
             playNext(index);
+            index++;
+        } else if (index === urls.length - 1) {
+            index = 0;
         } else {
             audio.stop();
         }
