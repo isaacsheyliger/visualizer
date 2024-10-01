@@ -34,11 +34,9 @@ function handleFiles() {
     // const fileList = this.files;
     // need to freeze the loop until the audio track completes
     // ditch for loop and use the index of the track 
-    for (let i = 0; i < inputElement.files.length; i++) {
+    for (let i = inputElement.files.length - 1; i >= 0; i--) {
         urls.push(URL.createObjectURL(inputElement.files[i]));
     }
-
-    console.log(inputElement.files);
 
     let index = 0;
     
