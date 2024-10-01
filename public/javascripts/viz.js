@@ -33,7 +33,7 @@ const urls = [];
 inputElement.addEventListener('change', handleFiles, false);
 
 function handleFiles() {
-    fileArr = Array.from(inputElement.files);
+    const fileArr = Array.from(inputElement.files);
     fileArr.reverse();
     for (let i = 0; i < fileArr.length; i++) {
         urls.push(URL.createObjectURL(fileArr[i]));
@@ -61,6 +61,7 @@ function handleFiles() {
     
     audioLoader.load(urls[index], buffer => {
         audio.setBuffer(buffer);
+        document.getElementById('file-loader').style.display = 'none';
         track.innerHTML = fileArr[index].name;
         playPauseButton.addEventListener('click', () => {
             audio.isPlaying ? audio.pause() : audio.play(); 
