@@ -19,13 +19,54 @@ sc.camera.add(listener);
 const audio = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
 
-const playPauseButton = document.getElementById('playPause');
-audioLoader.load('audio/Therapy.mp3', buffer => {
-    audio.setBuffer(buffer);
-    playPauseButton.addEventListener('click', () => {
-        audio.play();
+const playPauseButton = document.getElementById('play-pause');
+const nextButton = document.getElementById('next');
+const prevButton = document.getElementById('prev');
+const inputElement = document.getElementById('audio-file');
+const urls = [];
+for (let i = 0; i < inputElement.files.length; i++) {
+    urls.push(URL.createObjectURL(inputElement.files[i]));
+}
+console.log(urls)
+inputElement.addEventListener('change', handleFiles, false);
+
+function handleFiles() {
+    const fileList = this.files;
+    let index = urls.indexOf(audio.source.buffer.url);
+
+    console.log(fileList);
+    audioLoader.load(urls[index], buffer => {
+        audio.setBuffer(buffer);
+        playPauseButton.addEventListener('click', () => {
+            audio.isPlaying ? audio.pause() : audio.play(); 
+        });
+
+        index > 0 ? prevButton.addEventListener('click', () => playPrev(index)) : prevButton.disabled = true;
+        index < urls.length - 1 ? nextButton.addEventListener('click', () => playNext(index)) : nextButton.disabled = true;
     });
-});
+
+    function playNext(index) {
+        audioLoader.load(urls[index + 1], buffer => {
+            audio.setBuffer(buffer);
+            audio.play();
+        });
+    }
+
+    function playPrev(index) {
+        audioLoader.load(urls[index - 1], buffer => {
+            audio.setBuffer(buffer);
+            audio.play();
+        });
+    }
+
+    audio.onEnded = () => {
+        if (index < urls.length - 1) {
+            playNext(index);
+        } else {
+            audio.stop();
+        }
+    }
+}
 
 const analyser = new THREE.AudioAnalyser(audio, 32);
 

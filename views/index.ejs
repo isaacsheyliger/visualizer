@@ -129,13 +129,13 @@
     <div class="player">
       <div class="controls">
           <button id="prev" onclick="document.getElementById('audio').pause()">Previous</button>
-          <button id="playPause" onclick="document.getElementById('audio').play()">Play</button>
+          <button id="play-pause" onclick="document.getElementById('audio').play()">Play</button>
           <button id="next" onclick="document.getElementById('audio').load()">Next</button>
       </div>
     </div>
     <div id="file">
-      <input type="file" id="audioInput" accept="audio/*" />
-      <label for="audioInput" id="audioInputLabel">Choose a music file</label>
+      <input type="file" id="audio-file" accept="audio/*" multiple />
+      <label for="audio-file" id="audio-label">Choose a music file</label>
       <audio id="audio" controls>
           <source src="" type="audio/mpeg">
           Your browser does not support the audio element.
