@@ -31,19 +31,19 @@ console.log(urls)
 inputElement.addEventListener('change', handleFiles, false);
 
 function handleFiles() {
-    const fileList = this.files;
-    let index = urls.indexOf(audio.source.buffer.url);
-
-    console.log(fileList);
-    audioLoader.load(urls[index], buffer => {
-        audio.setBuffer(buffer);
-        playPauseButton.addEventListener('click', () => {
-            audio.isPlaying ? audio.pause() : audio.play(); 
+    // const fileList = this.files;
+    // loop through urls array
+    for (let i = 0; i < urls.length; i++) {
+        audioLoader.load(urls[i], buffer => {
+            audio.setBuffer(buffer);
+            playPauseButton.addEventListener('click', () => {
+                audio.isPlaying ? audio.pause() : audio.play(); 
+            });
+            
+            i > 0 ? prevButton.addEventListener('click', () => playPrev(i)) : prevButton.disabled = true;
+            i < urls.length - 1 ? nextButton.addEventListener('click', () => playNext(i)) : nextButton.disabled = true;
         });
-
-        index > 0 ? prevButton.addEventListener('click', () => playPrev(index)) : prevButton.disabled = true;
-        index < urls.length - 1 ? nextButton.addEventListener('click', () => playNext(index)) : nextButton.disabled = true;
-    });
+    }
 
     function playNext(index) {
         audioLoader.load(urls[index + 1], buffer => {
