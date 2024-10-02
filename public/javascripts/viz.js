@@ -18,7 +18,7 @@ sc.camera.add(listener);
 
 const audio = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
-console.log(audio.getVolume());
+console.log(audio);
 
 const audioData = document.getElementById('audio');
 const audioContext = new AudioContext();
@@ -41,6 +41,19 @@ volumeSlider.addEventListener('change', () => {
     volumeValue.textContent = volumeSlider.value;
 });
 
+const muteButton = document.getElementById('mute');
+muteButton.addEventListener('click', () => {
+    console.log(audio.getVolume());
+    if (audio.isPlaying) {
+        if (audio.getVolume() === 0) { 
+            audio.setVolume(volumeSlider.value / 100)
+            muteButton.textContent = "Mute" 
+        } else {
+            audio.setVolume(0);
+            muteButton.textContent = "Unmute";
+        }
+    }
+});
 
 const playPauseButton = document.getElementById('play-pause');
 const nextButton = document.getElementById('next');
