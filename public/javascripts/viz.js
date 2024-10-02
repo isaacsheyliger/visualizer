@@ -22,6 +22,7 @@ const audioLoader = new THREE.AudioLoader();
 const audioData = document.getElementById('audio');
 const audioContext = new AudioContext();
 
+const duration = document.getElementById('duration');
 const playPauseButton = document.getElementById('play-pause');
 const nextButton = document.getElementById('next');
 const prevButton = document.getElementById('prev');
@@ -36,7 +37,7 @@ const urls = [];
 inputElement.value = null;
 inputElement.addEventListener('change', handleFiles, false);
 
-function handleFiles() {
+async function handleFiles() {
     const fileArr = Array.from(inputElement.files);
     fileArr.reverse();
     for (let i = 0; i < fileArr.length; i++) {
@@ -44,7 +45,7 @@ function handleFiles() {
     }
     
     let index = 0;
-    getAudioDuration(index);
+    duration.textContent = await getAudioDuration(index);
 
     if (urls.length > 0) { playPauseButton.disabled = false; }
     // TODO: fix indexing
@@ -156,6 +157,7 @@ async function getAudioDuration(index) {
     // Set the buffer to the source node
     source.buffer = buffer;
     // Log the duration
-    return calculateTime(source.buffer.duration.toFixed(2));
+    const time = calculateTime(source.buffer.duration.toFixed(2));
+    return time;
 }
 // #endregion
