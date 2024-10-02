@@ -50,12 +50,10 @@ function handleFiles() {
     if (urls.length > 1) { 
         nextButton.disabled = false; 
         prevButton.addEventListener('click', () => {
-            playPrev(index); 
-            index--;
+            index = playPrev(index); 
         });
         nextButton.addEventListener('click', () => {
-            playNext(index)
-            index++;
+            index = playNext(index)
         });
     }
     
@@ -69,25 +67,29 @@ function handleFiles() {
     });
 
     function playNext(index) {
+        index++;
         audio.stop();
-        audioLoader.load(urls[index + 1], buffer => {
+        audioLoader.load(urls[index], buffer => {
             audio.setBuffer(buffer);
             track.innerHTML = fileArr[index].name;
             audio.play();
-            index + 1 >= urls.length - 1 ? nextButton.disabled = true : nextButton.disabled = false;
+            index >= urls.length - 1 ? nextButton.disabled = true : nextButton.disabled = false;
             prevButton.disabled = false;
         });
+        return index;
     }
 
     function playPrev(index) {
+        index--;
         audio.stop();
-        audioLoader.load(urls[index - 1], buffer => {
+        audioLoader.load(urls[index], buffer => {
             audio.setBuffer(buffer);
             track.innerHTML = fileArr[index].name;
             audio.play();
-            index - 1 < 0 ? prevButton.disabled = true : prevButton.disabled = false;
+            index <= 0 ? prevButton.disabled = true : prevButton.disabled = false;
             nextButton.disabled = false;
         });
+        return index;
     }
 
     audio.onEnded = () => {
