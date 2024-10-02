@@ -41,7 +41,6 @@ function handleFiles() {
     }
 
     console.log(fileArr);
-    console.log(urls);
     console.log(inputElement.files);
     
     let index = 0;
