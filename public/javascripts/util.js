@@ -85,3 +85,11 @@ export function plotMeshes(mixers = [], scene) {
         }
     }
 }
+
+export function calculateTime(s) {
+    console.log("calculating time");
+    const minutes = Math.floor(s / 60);
+    const seconds = Math.floor(s % 60);
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    return `${minutes}:${returnedSeconds}`;
+}

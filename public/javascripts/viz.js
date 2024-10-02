@@ -1,10 +1,10 @@
 import * as THREE from 'three';
+import * as meta from 'music-metadata';
 import { createScene } from './setup.js';
-import { createGrid, plotMeshes } from './util.js';
+import { calculateTime } from './util.js';
 
 // SCENE
 const sc = createScene(true);
-// createGrid(20, 20, sc.scene, 1, 0, 1);
 
 sc.camera.position.set(0, 0, 5000);
 
@@ -18,6 +18,9 @@ sc.camera.add(listener);
 
 const audio = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
+
+const audioData = document.getElementById('audio');
+const audioContext = new AudioContext();
 
 const playPauseButton = document.getElementById('play-pause');
 const nextButton = document.getElementById('next');
@@ -39,12 +42,22 @@ function handleFiles() {
     for (let i = 0; i < fileArr.length; i++) {
         urls.push(URL.createObjectURL(fileArr[i]));
     }
-
-    console.log(fileArr);
-    console.log(inputElement.files);
     
     let index = 0;
-    
+
+    async function getAudioDuration(index) {
+        const source = audioContext.createBufferSource(audioData);
+        const response = await fetch(urls[index]);
+        const arrayBuffer = await response.arrayBuffer();
+    // Decode the audio data
+        const buffer = await audioContext.decodeAudioData(arrayBuffer);
+        // Set the buffer to the source node
+        source.buffer = buffer;
+        // Log the duration
+        return calculateTime(source.buffer.duration.toFixed(2));
+    }
+    getAudioDuration(index);
+
     if (urls.length > 0) { playPauseButton.disabled = false; }
     // TODO: fix indexing
     if (urls.length > 1) { 
@@ -60,9 +73,10 @@ function handleFiles() {
     audioLoader.load(urls[index], buffer => {
         audio.setBuffer(buffer);
         document.getElementById('file-loader').style.display = 'none';
-        track.innerHTML = fileArr[index].name;
+        track.textContent = fileArr[index].name;
         playPauseButton.addEventListener('click', () => {
             audio.isPlaying ? audio.pause() : audio.play(); 
+            console.log(audio);
         });
     });
 
@@ -71,7 +85,7 @@ function handleFiles() {
         audio.stop();
         audioLoader.load(urls[index], buffer => {
             audio.setBuffer(buffer);
-            track.innerHTML = fileArr[index].name;
+            track.textContent = fileArr[index].name;
             audio.play();
             index >= urls.length - 1 ? nextButton.disabled = true : nextButton.disabled = false;
             prevButton.disabled = false;
@@ -84,7 +98,7 @@ function handleFiles() {
         audio.stop();
         audioLoader.load(urls[index], buffer => {
             audio.setBuffer(buffer);
-            track.innerHTML = fileArr[index].name;
+            track.textContent = fileArr[index].name;
             audio.play();
             index <= 0 ? prevButton.disabled = true : prevButton.disabled = false;
             nextButton.disabled = false;
