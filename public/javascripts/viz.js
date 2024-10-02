@@ -30,6 +30,7 @@ const track = document.getElementById('current-track');
 
 const inputElement = document.getElementById('audio-file');
 const urls = [];
+inputElement.value = null;
 inputElement.addEventListener('change', handleFiles, false);
 
 function handleFiles() {
@@ -45,8 +46,8 @@ function handleFiles() {
     
     let index = 0;
     
-    // enable buttons based on number of tracks uploaded
     if (urls.length > 0) { playPauseButton.disabled = false; }
+    // TODO: fix indexing
     if (urls.length > 1) { 
         nextButton.disabled = false; 
         prevButton.addEventListener('click', () => {
@@ -72,6 +73,7 @@ function handleFiles() {
         audio.stop();
         audioLoader.load(urls[index + 1], buffer => {
             audio.setBuffer(buffer);
+            track.innerHTML = fileArr[index].name;
             audio.play();
             index + 1 >= urls.length - 1 ? nextButton.disabled = true : nextButton.disabled = false;
             prevButton.disabled = false;
@@ -82,6 +84,7 @@ function handleFiles() {
         audio.stop();
         audioLoader.load(urls[index - 1], buffer => {
             audio.setBuffer(buffer);
+            track.innerHTML = fileArr[index].name;
             audio.play();
             index - 1 < 0 ? prevButton.disabled = true : prevButton.disabled = false;
             nextButton.disabled = false;

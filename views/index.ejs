@@ -81,7 +81,7 @@
         vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
         vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
 
-        vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+        vec4 norm0 = taylorIinputElement.disabled = true;nvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
         g000 *= norm0.x;
         g010 *= norm0.y;
         g100 *= norm0.z;
@@ -128,8 +128,8 @@
   <body style="display: flex; flex-direction: column-reverse;">
     <div class="player">
       <div id="file-loader">
+        <label for="audio-file" id="audio-label">Choose a music file:</label>
         <input type="file" id="audio-file" accept="audio/*" multiple />
-        <label for="audio-file" id="audio-label">Choose a music file</label>
       </div>
       <div id="now-playing">
         <div id="current-track"></div>
