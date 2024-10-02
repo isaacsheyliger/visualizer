@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import * as meta from 'music-metadata';
 import { createScene } from './setup.js';
 import { calculateTime } from './util.js';
 
