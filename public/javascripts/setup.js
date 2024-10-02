@@ -3,8 +3,8 @@ import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 
 export function createScene(orbitControls = false) {
     // Set up scene
-    const canvasWidth = 800;
-    const canvasHeight = 800;
+    const canvasWidth = window.innerWidth / 1.25;
+    const canvasHeight = canvasWidth;
     const d = 20
     const aspect = canvasWidth / canvasHeight;
 

@@ -1,8 +1,9 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@font-face {
+  font-family: "Glass TTY";
+  src: url("/fonts/Glass_TTY_VT220.ttf");
 }
 
-a {
-  color: #00B7FF;
+html {
+  margin: 1rem;
+  font: 14px "Glass TTY", Helvetica, Arial, sans-serif;
 }
