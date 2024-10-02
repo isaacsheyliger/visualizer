@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { createScene } from './setup.js';
 import { calculateTime } from './util.js';
 
-// SCENE
+// #region SCENE
 const sc = createScene(true);
 
 sc.camera.position.set(0, 0, 5000);
@@ -10,8 +10,9 @@ sc.camera.position.set(0, 0, 5000);
 sc.controls.enableDamping = true;
 sc.controls.enableKeys = false;
 sc.controls.enablePan = false;
+// #endregion
 
-// AUDIO
+// #region AUDIO
 const listener = new THREE.AudioListener();
 sc.camera.add(listener);
 
@@ -43,18 +44,6 @@ function handleFiles() {
     }
     
     let index = 0;
-
-    async function getAudioDuration(index) {
-        const source = audioContext.createBufferSource(audioData);
-        const response = await fetch(urls[index]);
-        const arrayBuffer = await response.arrayBuffer();
-    // Decode the audio data
-        const buffer = await audioContext.decodeAudioData(arrayBuffer);
-        // Set the buffer to the source node
-        source.buffer = buffer;
-        // Log the duration
-        return calculateTime(source.buffer.duration.toFixed(2));
-    }
     getAudioDuration(index);
 
     if (urls.length > 0) { playPauseButton.disabled = false; }
@@ -75,7 +64,6 @@ function handleFiles() {
         track.textContent = fileArr[index].name;
         playPauseButton.addEventListener('click', () => {
             audio.isPlaying ? audio.pause() : audio.play(); 
-            console.log(audio);
         });
     });
 
@@ -118,8 +106,9 @@ function handleFiles() {
 }
 
 const analyser = new THREE.AudioAnalyser(audio, 32);
+// #endregion
 
-// VIZ
+// #region VIZ
 const uniforms = {
     u_time: { value: 0.0 },
     u_frequency: { value: 0.0 },
@@ -139,9 +128,9 @@ sc.scene.add(mesh);
 function keyframes() {
     
 }
+// #endregion
 
-// ANIMATE
-
+// #region ANIMATE
 let clock = new THREE.Clock();
 
 function animate () {
@@ -155,3 +144,18 @@ function animate () {
     sc.renderer.render(sc.scene, sc.camera);
 }
 sc.renderer.setAnimationLoop(animate);
+// #endregion
+
+// #region HELPER FUNCTIONS
+async function getAudioDuration(index) {
+    const source = audioContext.createBufferSource(audioData);
+    const response = await fetch(urls[index]);
+    const arrayBuffer = await response.arrayBuffer();
+// Decode the audio data
+    const buffer = await audioContext.decodeAudioData(arrayBuffer);
+    // Set the buffer to the source node
+    source.buffer = buffer;
+    // Log the duration
+    return calculateTime(source.buffer.duration.toFixed(2));
+}
+// #endregion
