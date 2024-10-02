@@ -18,11 +18,30 @@ sc.camera.add(listener);
 
 const audio = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
+console.log(audio.getVolume());
 
 const audioData = document.getElementById('audio');
 const audioContext = new AudioContext();
 
 const duration = document.getElementById('duration');
+const seekSlider = document.getElementById('seek-slider');
+const currentTime = document.getElementById('current-time');
+
+seekSlider.addEventListener('change', () => {
+    currentTime.textContent = calculateTime(seekSlider.value);
+    audio.stop();
+    audio.offset = seekSlider.value;
+    audio.play();
+})
+
+const volumeSlider = document.getElementById('volume-slider');
+const volumeValue = document.getElementById('volume-output');
+volumeSlider.addEventListener('change', () => {
+    audio.setVolume(volumeSlider.value / 100);
+    volumeValue.textContent = volumeSlider.value;
+});
+
+
 const playPauseButton = document.getElementById('play-pause');
 const nextButton = document.getElementById('next');
 const prevButton = document.getElementById('prev');
@@ -38,18 +57,18 @@ inputElement.value = null;
 inputElement.addEventListener('change', handleFiles, false);
 
 async function handleFiles() {
-    const fileArr = Array.from(inputElement.files);
-    fileArr.reverse();
-    for (let i = 0; i < fileArr.length; i++) {
-        urls.push(URL.createObjectURL(fileArr[i]));
-    }
+    // create array from input files and reverse it to play in order
+    const fileArr = getFileArray(inputElement.files, urls);
     
     let index = 0;
-    duration.textContent = await getAudioDuration(index);
+    const trackTime = await getAudioDuration(index)
+    duration.textContent = calculateTime(trackTime);
+    setSliderMax(trackTime);
+
+
 
     if (urls.length > 0) { playPauseButton.disabled = false; }
-    // TODO: fix indexing
-    if (urls.length > 1) { 
+    else if (urls.length > 1) { 
         nextButton.disabled = false; 
         prevButton.addEventListener('click', () => {
             index = playPrev(index); 
@@ -148,6 +167,15 @@ sc.renderer.setAnimationLoop(animate);
 // #endregion
 
 // #region HELPER FUNCTIONS
+function getFileArray(files, urls) {
+    const arr = Array.from(files);
+    arr.reverse();
+    for (let i = 0; i < arr.length; i++) {
+        urls.push(URL.createObjectURL(arr[i]));
+    }
+    return arr
+}
+
 async function getAudioDuration(index) {
     const source = audioContext.createBufferSource(audioData);
     const response = await fetch(urls[index]);
@@ -157,7 +185,10 @@ async function getAudioDuration(index) {
     // Set the buffer to the source node
     source.buffer = buffer;
     // Log the duration
-    const time = calculateTime(source.buffer.duration.toFixed(2));
-    return time;
+    return source.buffer.duration.toFixed(2);
+}
+
+function setSliderMax(time) {
+    seekSlider.max = Math.floor(time);
 }
 // #endregion
