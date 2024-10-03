@@ -31,6 +31,10 @@ label:hover {
 /* #endregion */
 
 /* #region DESKTOP STYLES */
+button {
+  width: 40px;
+}
+
 .player {
   width: 75%;
 }
@@ -45,6 +49,10 @@ label:hover {
     font-size: 1.4em;
   }
 
+  button {
+    width: 32px;
+  }
+  
   .player {
     width: 100%;
   }
