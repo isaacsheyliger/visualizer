@@ -18,14 +18,20 @@ sc.camera.add(listener);
 
 const audio = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
-console.log(audio);
 
 const audioData = document.getElementById('audio');
-const audioContext = new AudioContext();
+const audioContext = listener.context;
 
 const duration = document.getElementById('duration');
 const seekSlider = document.getElementById('seek-slider');
 const currentTime = document.getElementById('current-time');
+
+// slider count logic
+// on play click, start a timer that increments the slider value
+// on pause click, pause the timer
+// on seek, update the timer to the sought value, and update the audio offset
+// when timer value matches duration, pause the timer
+// reset the timer on track change
 
 seekSlider.addEventListener('change', () => {
     currentTime.textContent = calculateTime(seekSlider.value);
@@ -43,7 +49,6 @@ volumeSlider.addEventListener('change', () => {
 
 const muteButton = document.getElementById('mute');
 muteButton.addEventListener('click', () => {
-    console.log(audio.getVolume());
     if (audio.isPlaying) {
         if (audio.getVolume() === 0) { 
             audio.setVolume(volumeSlider.value / 100)
@@ -193,7 +198,7 @@ async function getAudioDuration(index) {
     const source = audioContext.createBufferSource(audioData);
     const response = await fetch(urls[index]);
     const arrayBuffer = await response.arrayBuffer();
-// Decode the audio data
+    // Decode the audio data
     const buffer = await audioContext.decodeAudioData(arrayBuffer);
     // Set the buffer to the source node
     source.buffer = buffer;
