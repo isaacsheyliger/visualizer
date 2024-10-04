@@ -108,6 +108,7 @@ async function handleFiles() {
         audio.setBuffer(buffer);
         document.getElementById('file-loader').style.display = 'none';
         track.textContent = fileArr[index].name;
+        // TODO: scroll track name if >42 characters, need to figure how to determine when to stop
         playPauseButton.addEventListener('click', () => {
             audio.isPlaying ? audio.pause() : audio.play(); 
         });

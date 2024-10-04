@@ -32,9 +32,15 @@ label:hover {
   display: none;
 }
 
-#now-playing {
+hr {
+  border-top: 1px solid #e1e1e1;
   margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+#current-track {
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #player {
@@ -44,13 +50,14 @@ label:hover {
   margin-bottom: 5rem;
 }
 
-#now-playing {
+#text {
   width: 75%;
 }
 
 #seek {
   display: flex;
   align-items: center;
+  margin-top: .5rem;
 }
 
 #seek-slider {

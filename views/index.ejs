@@ -128,13 +128,16 @@
   </head>
   <body>
     <div id="player">
-      <div id="file-loader">
-        <label for="audio-file" id="audio-label">Select an audio file</label>
-        <input type="file" id="audio-file" accept="audio/*" multiple />
-      </div>
-      <div id="now-playing">
+      <div id="text">
+        <div id="now-playing">
+          <div id="file-loader">
+            <label for="audio-file" id="audio-label">Select an audio file</label>
+            <input type="file" id="audio-file" accept="audio/*" multiple />
+          </div>
+          <div id="current-track"></div>
+        </div>
         <audio id="audio" preload="metadata"></audio>
-        <div id="current-track"></div>
+        <hr>
         <div id="seek">
           <span id="current-time" class="time">0:00</span>
           <input type="range" id="seek-slider" max="0" value="0">
