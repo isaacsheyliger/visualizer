@@ -91,8 +91,6 @@ async function handleFiles() {
     duration.textContent = calculateTime(trackTime);
     setSliderMax(trackTime);
 
-
-
     if (urls.length > 0) { playPauseButton.disabled = false; }
     else if (urls.length > 1) { 
         nextButton.disabled = false; 
