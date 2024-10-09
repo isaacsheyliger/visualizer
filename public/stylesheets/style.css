@@ -40,6 +40,9 @@ hr {
 
 #current-track {
   white-space: nowrap;
+}
+
+#now-playing {
   overflow: hidden;
 }
 
@@ -76,7 +79,20 @@ hr {
   width: 75%;
   margin-left: 1.5rem;
 }
+/* #endregion */
 
+/* #region KEYFRAMES */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 /* #endregion */
 
 /* #region DESKTOP STYLES */

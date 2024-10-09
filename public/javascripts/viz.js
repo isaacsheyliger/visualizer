@@ -110,7 +110,7 @@ async function handleFiles() {
         track.textContent = fileArr[index].name;
         // TODO: scroll track name if >42 characters, need to figure how to determine when to stop
         if (fileArr[index].name.length > 42) {
-            track.style.animation = `scroll ${fileArr[index].name.length / 10}s linear infinite`;
+            track.style.animation = `scroll ${(fileArr[index].name.length / 10) + 2}s linear infinite`;
         }
         playPauseButton.addEventListener('click', () => {
             audio.isPlaying ? audio.pause() : audio.play(); 
